@@ -8,27 +8,37 @@
 */
 pragma solidity ^0.8.0;
 
+// 声明 Solidity 版本号
 contract MyToken {
-    string public name = "iToken";  // Token 名称
-    string public symbol = "MTK";    // Token 缩写
-    uint8 public decimals = 18;      // Token 小数位数
-    uint256 public totalSupply;      // Token 总量
+    // 定义名为 MyToken 的合约
 
-    mapping(address => uint256) public balanceOf;  // 每个账户的余额
+    string public name = "iTokon";     // Token 名称
+    string public symbol = "iTK";     // Token 缩写
+    uint8 public decimals = 18;        // Token 小数位数
+    uint256 public totalSupply;        // Token 总量
 
-    event Transfer(address indexed from, address indexed to, uint256 value);  // 转账事件
+    mapping(address => uint256) public balanceOf;
+    // 定义公共映射，将每个账户的地址与其余额关联起来
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    // 定义转账事件，用于记录交易信息
 
     constructor(uint256 initialSupply) {
-        totalSupply = initialSupply;
-        balanceOf[msg.sender] = initialSupply;
+        // 合约构造函数，在创建合约时初始化总量和发行者余额
+
+        totalSupply = initialSupply;    // 初始化总量
+        balanceOf[msg.sender] = initialSupply;   // 初始化发行者余额
     }
 
-    // 转账方法
     function transfer(address to, uint256 value) public returns (bool success) {
+        // 实现转账方法
+
         require(balanceOf[msg.sender] >= value, "Insufficient balance");
-        balanceOf[msg.sender] -= value;
-        balanceOf[to] += value;
-        emit Transfer(msg.sender, to, value);
-        return true;
+        // 检查转账人余额是否足够，如果不足，则终止函数执行并抛出异常
+
+        balanceOf[msg.sender] -= value;    // 发送者扣除转账金额
+        balanceOf[to] += value;            // 接收者增加转账金额
+        emit Transfer(msg.sender, to, value);   // 触发转账事件，记录交易信息
+        return true;   // 返回成功状态
     }
 }
